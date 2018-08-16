@@ -32,7 +32,9 @@ public class Main extends JFrame {
     JButton findFileBtn = new JButton("find");
     JTextArea resultArea = new JTextArea("test");
     JScrollPane resultAreaPane = new JScrollPane(resultArea);
-    
+    File fileToFind;
+    Runnable runnable = new ValidateThread();
+    Thread thread = new Thread(runnable);
     
     void initComponents()
     {
@@ -47,16 +49,19 @@ public class Main extends JFrame {
          searchPanel.add(findFileBtn);
         
          
-         this.getContentPane().add(resultArea);
+         this.getContentPane().add(resultAreaPane);
          
          findFileBtn.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) 
              {
-                 System.out.println("szukam");
-                 resultArea.setText("testdwad");
+                 fileToFind = new File(findFileField.getText());
+                 
+                 thread.start();
+             
+                       
                 File fileToFind = new File(findFileField.getText());
-                findFile(new File(System.getProperty("user.home")),fileToFind);
+              
                  
              }
          });
@@ -64,18 +69,27 @@ public class Main extends JFrame {
          
     }
     
+   
+ 
+    
     void  findFile(File directory,File fileToFind)
     {
        
         String[] directories=directory.list();
         for(int i=0; i<directories.length;i++)
         {
-
+   
             File searchDir = new File(directory.getPath(),directories[i]);
             File searchFile = new File(searchDir,fileToFind.getName());
+            System.out.println(searchDir);
             if(searchDir.getName().contains(searchFile.getName()))
-                System.out.println(searchDir);            
-                    
+            {
+                       
+                resultArea.append(searchDir.toString()+"\n");
+                resultArea.setCaretPosition(resultArea.getText().length() - 1);
+                resultArea.update(resultArea.getGraphics());
+            }
+            
             if (searchDir.isDirectory())
             {
               
@@ -84,7 +98,16 @@ public class Main extends JFrame {
             }
             
         }
+        
+        System.out.println("ENDED");
     }   
+    
+    class ValidateThread implements Runnable {
+    public void run() {
+        findFile(new File(System.getProperty("user.dir")),fileToFind);
+    }
+}
+    
     
     public static void main(String[] args) {
         

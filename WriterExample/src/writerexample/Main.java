@@ -18,11 +18,18 @@ public class Main {
     public static void main(String[] args) throws IOException {
      
         Writer writer = new FileWriter("test.txt");
+
+        BufferedWriter writer2= new BufferedWriter(new FileWriter("test2.txt"));
+        
+        
         
         writer.write("test");
         
-        writer.close();
+        writer2.newLine();
+        writer2.write("new line");
         
+        writer.close();
+        writer2.close();
     }
     
 }
