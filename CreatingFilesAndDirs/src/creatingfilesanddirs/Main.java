@@ -67,9 +67,10 @@ public class Main {
         }
         System.out.println("-------------------------");
         
-       File lookedFile =  new File("hidden.txt");
+       //File lookedFile =  new File("hidden.txt");
+       findFile(new File(System.getProperty("user.dir")),new File("private.properties"));
         
-       findFile(lookedFile,"CreatingFilesAndDirs");
+       //showDirectories(new File(System.getProperty("user.dir")));
        
     }
     
@@ -77,12 +78,14 @@ public class Main {
     {
        
         String[] directories=directory.list();
-       // System.out.println(directory.getPath());
         for(int i=0; i<directories.length;i++)
         {
-            File subFile = new File(directory.getPath(),directories[i] );
-            System.out.println(subFile);
+//           
+           
+           File subFile = new File(directory.getPath(),directories[i]);
             
+           System.out.println(subFile);
+//            
             if(subFile.isDirectory())
             {
                 showDirectories(subFile);
@@ -92,37 +95,32 @@ public class Main {
             
         }
     }   
-        
-    static void  findFile(File fl,String parentDir)
+
+    
+    static void  findFile(File directory,File fileToFind)
     {
-        
-        File directoryToFind = new File(parentDir);
-        String[] fileDir=directoryToFind.list();
-
-        
-        for(int i=0; i<fileDir.length;i++)
+       
+        String[] directories=directory.list();
+        for(int i=0; i<directories.length;i++)
         {
-            File subFile = new File(directoryToFind.getPath(),fileDir[i]);
-            System.out.println(subFile);
 
-            if(subFile.isDirectory())
+            File searchDir = new File(directory.getPath(),directories[i]);
+            File searchFile = new File(searchDir,fileToFind.getName());
+            if(searchDir.getName().equals(searchFile.getName()))
+                    System.out.println(searchDir);
+            if (searchDir.isDirectory())
             {
-            
-                findFile(subFile,subFile.getParent());
-            
+              
+                findFile(searchDir,searchFile);
+                           
             }
-//            
-//            if(subFile.getName().equals(fl.getName()))
-//            {
-//                System.out.println(subFile.getAbsolutePath());
-//
-//            }
-//            
             
-  
         }
-        
-        
-    }
-
+    }   
 }
+
+
+
+ 
+
+
