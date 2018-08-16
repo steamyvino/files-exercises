@@ -52,7 +52,7 @@ public class Main {
         System.out.println("Bytes: "+fileOne.length());
         System.out.println("Date modified "+new Date(fileOne.lastModified()));
      
-        
+
         System.out.println(System.getProperty("user.dir"));
         System.out.println(fileOne.getAbsolutePath());  
         System.out.println(fileOne.getCanonicalPath());  
