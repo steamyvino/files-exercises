@@ -66,9 +66,9 @@ public class Main {
             System.out.println(ex.getMessage());
         }
         System.out.println("-------------------------");
-        
+        System.out.println(System.getProperty("user.home"));
        //File lookedFile =  new File("hidden.txt");
-       findFile(new File(System.getProperty("user.dir")),new File("private.properties"));
+       findFile(new File(System.getProperty("user.home")),new File("txt"));
         
        //showDirectories(new File(System.getProperty("user.dir")));
        
@@ -106,7 +106,7 @@ public class Main {
 
             File searchDir = new File(directory.getPath(),directories[i]);
             File searchFile = new File(searchDir,fileToFind.getName());
-            if(searchDir.getName().equals(searchFile.getName()))
+            if(searchDir.getName().contains(searchFile.getName()))
                     System.out.println(searchDir);
             if (searchDir.isDirectory())
             {
