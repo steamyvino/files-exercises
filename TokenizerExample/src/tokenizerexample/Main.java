@@ -5,6 +5,8 @@
  */
 package tokenizerexample;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,10 +23,9 @@ public class Main {
      
         
             Product[] products=new Product[3];
-            products[0] = new Product();
             products[0] = new Product("cz-75",3599.99,2015,11,04);
-            products[0] = new Product("glock 19 gen V",2440.59,2018,5,2);
-            products[0] = new Product("Pistolet HK USP",2999.0,2018,2,9);
+            products[1] = new Product("glock 19",2440.59,2018,5,2);
+            products[2] = new Product("HK USP",2999.0,2018,2,9);
             
             
             
@@ -34,7 +35,19 @@ public class Main {
             
             Product.writeToDataBase(products, writer);
             
+            
             writer.close();
+            
+            BufferedReader reader = new BufferedReader(new FileReader("database.txt"));
+            
+            Product[] products2;
+            products2=Product.readFromFile(reader);
+            for(int i=0; i<products2.length;i++)
+            {
+                System.out.println(products[i]);
+            
+            }
+            
             
         } 
         catch (IOException ex)
@@ -43,6 +56,9 @@ public class Main {
       
         }
        
+          
+    
+      
         
         
     }

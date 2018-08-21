@@ -5,10 +5,13 @@
  */
 package tokenizerexample;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.StringTokenizer;
 
 
 public class Product
@@ -77,6 +80,15 @@ public class Product
         this.dateOfProduction=calendar.getTime();
     }
     
+    @Override
+    public String toString()
+    {   
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(this.getDate());
+        return ("Name: "+this.getName()+" "+"|Price: "+this.getPrice()+"|Year "+calendar.get(Calendar.YEAR)+"|Month "+calendar.get(Calendar.MONTH)+"|Day "+calendar.get(Calendar.DAY_OF_MONTH));
+    }
+    
+    
     
     static void writeToDataBase(Product[] products, PrintWriter writer)
     {
@@ -87,11 +99,35 @@ public class Product
         for(int i=0; i<products.length;i++)
         {
             calendar.setTime(products[i].getDate());
-            writer.println(products[i].getName()+"|"+products[i].getPrice()+"|"+products[i].getDate()+"|"+calendar.get(Calendar.YEAR)+"|"+calendar.get(Calendar.MONTH)+"|"+calendar.get(Calendar.DAY_OF_MONTH));
+            writer.println(products[i].getName()+"|"+products[i].getPrice()+"|"+calendar.get(Calendar.YEAR)+"|"+calendar.get(Calendar.MONTH)+"|"+calendar.get(Calendar.DAY_OF_MONTH));
         
+        }
+        
+    }
+    
+    static Product[] readFromFile (BufferedReader reader) throws IOException
+    {
+        int length=Integer.parseInt(reader.readLine());
+        
+        Product[] products = new Product[length];
+        
+        for(int i=0; i<length;i++)
+        {
+            String line = reader.readLine();
+            StringTokenizer token = new StringTokenizer(line,"|");
+            String name = token.nextToken();
+            Double price = Double.parseDouble(token.nextToken());
+            int year=Integer.parseInt(token.nextToken());
+            int month=Integer.parseInt(token.nextToken());
+            int day=Integer.parseInt(token.nextToken());
+    
+            products[i]=new Product(name,price,year,month,day);
         
         }
     
+         return products;       
+    
     }
+     
     
 }
