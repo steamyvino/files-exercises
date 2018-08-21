@@ -6,10 +6,15 @@
 package tokenizerexample;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,24 +35,60 @@ public class Main {
             
             
         try 
-        {    
-            PrintWriter  writer = new PrintWriter("database.txt");
+        {   
             
-            Product.writeToDataBase(products, writer);
+            /**
+             * Lesson 89
+             */
+//            PrintWriter  writer = new PrintWriter("database.txt");
+//            
+//            Product.writeToDataBase(products, writer);
+//            
+//            
+//            writer.close();
+//            
+//            BufferedReader reader = new BufferedReader(new FileReader("database.txt"));
+//            
+//            Product[] products2;
+//            products2=Product.readFromFile(reader);
+//            for(int i=0; i<products2.length;i++)
+//            {
+//                System.out.println(products[i]);
+//            
+//            }
             
+            /**
+             * Lesson 90 part 1
+             */
             
-            writer.close();
+            DataOutputStream outS = new DataOutputStream(new FileOutputStream("data.txt"));
             
-            BufferedReader reader = new BufferedReader(new FileReader("database.txt"));
+            outS.writeDouble(1245.342);
+            outS.close();
             
-            Product[] products2;
-            products2=Product.readFromFile(reader);
-            for(int i=0; i<products2.length;i++)
-            {
-                System.out.println(products[i]);
+            DataInputStream inS = new DataInputStream(new FileInputStream("data.txt"));
             
-            }
+            System.out.println(inS.readDouble());
+            inS.close();
             
+            /**
+             * Lesson 90 part 2
+             */
+            
+            RandomAccessFile raf = new RandomAccessFile("data2.txt","rw");    
+            
+            raf.writeDouble(23.34);
+            raf.writeDouble(9.4);
+            raf.writeChars("test");
+            
+            raf.seek(0);
+            System.out.println(raf.readDouble());
+            raf.seek(8);
+            System.out.println(raf.readDouble());
+            raf.seek(16);
+            System.out.println(raf.getFilePointer());  // output: 16
+            System.out.println(raf.readChar()); //output: "t" 
+            raf.close();
             
         } 
         catch (IOException ex)

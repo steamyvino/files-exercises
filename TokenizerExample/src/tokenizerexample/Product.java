@@ -16,9 +16,10 @@ import java.util.StringTokenizer;
 
 public class Product
 {
-    private String name;
-    private double price;
-    private Date dateOfProduction;
+    private static final int NAME_LENGTH = 30; 
+    private String name; // 60 byte
+    private double price; // 8 byte
+    private Date dateOfProduction; //  4+4+4=12 (3 integers) 
     
     Product()
     {
