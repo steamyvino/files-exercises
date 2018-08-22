@@ -61,35 +61,52 @@ public class Main {
              * Lesson 90 part 1
              */
             
-            DataOutputStream outS = new DataOutputStream(new FileOutputStream("data.txt"));
-            
-            outS.writeDouble(1245.342);
-            outS.close();
-            
-            DataInputStream inS = new DataInputStream(new FileInputStream("data.txt"));
-            
-            System.out.println(inS.readDouble());
-            inS.close();
+//            DataOutputStream outS = new DataOutputStream(new FileOutputStream("data.txt"));
+//            
+//            outS.writeDouble(1245.342);
+//            outS.close();
+//            
+//            DataInputStream inS = new DataInputStream(new FileInputStream("data.txt"));
+//            
+//            System.out.println(inS.readDouble());
+//            inS.close();
             
             /**
              * Lesson 90 part 2
              */
+//            
+//            RandomAccessFile raf = new RandomAccessFile("data2.txt","rw");    
+//            
+//            raf.writeDouble(23.34);
+//            raf.writeDouble(9.4);
+//            raf.writeChars("test");
+//            
+//            raf.seek(0);
+//            System.out.println(raf.readDouble());
+//            raf.seek(8);
+//            System.out.println(raf.readDouble());
+//            raf.seek(16);
+//            System.out.println(raf.getFilePointer());  // output: 16
+//            System.out.println(raf.readChar()); //output: "t" 
+//            raf.close();
+//            
             
-            RandomAccessFile raf = new RandomAccessFile("data2.txt","rw");    
+            /**
+             * Lesson 91
+             */
             
-            raf.writeDouble(23.34);
-            raf.writeDouble(9.4);
-            raf.writeChars("test");
+            RandomAccessFile raf = new RandomAccessFile("database.txt","rw");
             
-            raf.seek(0);
-            System.out.println(raf.readDouble());
-            raf.seek(8);
-            System.out.println(raf.readDouble());
-            raf.seek(16);
-            System.out.println(raf.getFilePointer());  // output: 16
-            System.out.println(raf.readChar()); //output: "t" 
-            raf.close();
+            Product.writeToDataBase(products, raf);
             
+            
+          
+            Product[] products2= Product.readFromFile(raf);
+            System.out.println(products2[0].getName());
+             
+            
+             
+             raf.close();
         } 
         catch (IOException ex)
         {

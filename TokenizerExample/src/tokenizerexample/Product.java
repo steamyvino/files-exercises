@@ -6,8 +6,10 @@
 package tokenizerexample;
 
 import java.io.BufferedReader;
+import java.io.DataOutput;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,7 +18,8 @@ import java.util.StringTokenizer;
 
 public class Product
 {
-    private static final int NAME_LENGTH = 30; 
+    private static final int NAME_LENGTH = 30;
+    private static final int RECORD_LENGTH = (NAME_LENGTH+Double.BYTES+3*Integer.BYTES);
     private String name; // 60 byte
     private double price; // 8 byte
     private Date dateOfProduction; //  4+4+4=12 (3 integers) 
@@ -91,38 +94,75 @@ public class Product
     
     
     
-    static void writeToDataBase(Product[] products, PrintWriter writer)
+    static void writeToDataBase(Product[] products, DataOutput OutS) throws IOException
     {
-    
-        writer.println(products.length);
-        GregorianCalendar calendar =new GregorianCalendar();
-        
+
         for(int i=0; i<products.length;i++)
-        {
-            calendar.setTime(products[i].getDate());
-            writer.println(products[i].getName()+"|"+products[i].getPrice()+"|"+calendar.get(Calendar.YEAR)+"|"+calendar.get(Calendar.MONTH)+"|"+calendar.get(Calendar.DAY_OF_MONTH));
-        
-        }
-        
+            products[i].writeSingleRecordToDatabase(OutS);
     }
     
-    static Product[] readFromFile (BufferedReader reader) throws IOException
+    
+    public void writeSingleRecordToDatabase(DataOutput OutS) throws IOException
     {
-        int length=Integer.parseInt(reader.readLine());
+        
+        StringBuffer stringB = new StringBuffer(NAME_LENGTH);
+        stringB.append(name);
+     
+        OutS.writeChars(stringB.toString());
+        
+        OutS.writeDouble(price);
+        
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(dateOfProduction);
+        OutS.writeInt(calendar.get(Calendar.YEAR));
+        OutS.writeInt(calendar.get(Calendar.MONTH));
+        OutS.writeInt(calendar.get(Calendar.DAY_OF_MONTH));
+      
+    
+    }
+    
+    public void readRecord(RandomAccessFile InS) throws IOException
+    {
+       
+       StringBuffer stringB = new StringBuffer(NAME_LENGTH);
+       
+       for(int i=0; i<NAME_LENGTH;i++)
+       {
+           
+           char tempChar = InS.readChar();
+           
+           if(tempChar!='\0')
+              stringB.append(tempChar);
+       
+           
+       }  
+           this.name=stringB.toString();
+           this.price=InS.readDouble();
+           int year = InS.readInt();
+           int month = InS.readInt();
+           int day = InS.readInt();
+           
+           GregorianCalendar calendar = new GregorianCalendar(year,month-1,day);
+           this.dateOfProduction=calendar.getTime();
+           
+      
+        
+    
+    }
+    
+    
+    static Product[] readFromFile (RandomAccessFile InS) throws IOException
+    {
+        InS.seek(0);
+        int length= (int)(InS.length()/RECORD_LENGTH);
         
         Product[] products = new Product[length];
         
+        
         for(int i=0; i<length;i++)
         {
-            String line = reader.readLine();
-            StringTokenizer token = new StringTokenizer(line,"|");
-            String name = token.nextToken();
-            Double price = Double.parseDouble(token.nextToken());
-            int year=Integer.parseInt(token.nextToken());
-            int month=Integer.parseInt(token.nextToken());
-            int day=Integer.parseInt(token.nextToken());
-    
-            products[i]=new Product(name,price,year,month,day);
+           products[i]=new Product();
+           products[i].readRecord(InS);
         
         }
     
