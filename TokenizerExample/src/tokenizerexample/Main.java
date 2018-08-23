@@ -28,7 +28,7 @@ public class Main {
      
         
             Product[] products=new Product[3];
-            products[0] = new Product("cz-75",3599.99,2015,11,04);
+            products[0] = new Product("cz-85 Combat",3599.99,2015,11,04);
             products[1] = new Product("glock 19",2440.59,2018,5,2);
             products[2] = new Product("HK USP",2999.0,2018,2,9);
             
@@ -99,13 +99,34 @@ public class Main {
             
             Product.writeToDataBase(products, raf);
             
+
+         
+           
+           
+           
+           Product[] products2= Product.readFromFile(raf);
             
-          
-            Product[] products2= Product.readFromFile(raf);
-            System.out.println(products2[0].getName());
-             
-            
-             
+           for(int i=0;i<products2.length;i++)
+           {
+               System.out.println(products2[i].toString());
+
+
+           }
+           
+       
+           
+            System.out.println("----------------");
+           
+            try{
+                Product tets2 = new Product();
+                tets2.readRecord(raf,3);
+                System.out.println(tets2);
+            }
+            catch(NoRecord error)
+            {
+                System.out.println(error.getMessage());
+            }
+           
              raf.close();
         } 
         catch (IOException ex)

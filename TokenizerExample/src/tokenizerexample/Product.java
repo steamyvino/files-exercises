@@ -6,6 +6,7 @@
 package tokenizerexample;
 
 import java.io.BufferedReader;
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,8 +19,8 @@ import java.util.StringTokenizer;
 
 public class Product
 {
-    private static final int NAME_LENGTH = 30;
-    private static final int RECORD_LENGTH = (NAME_LENGTH+Double.BYTES+3*Integer.BYTES);
+    public static final int NAME_LENGTH = 30;
+    public static final int RECORD_LENGTH = (Character.BYTES*NAME_LENGTH+Double.BYTES+3*Integer.BYTES);
     private String name; // 60 byte
     private double price; // 8 byte
     private Date dateOfProduction; //  4+4+4=12 (3 integers) 
@@ -98,16 +99,19 @@ public class Product
     {
 
         for(int i=0; i<products.length;i++)
+        {
             products[i].writeSingleRecordToDatabase(OutS);
+
+        }
     }
     
     
     public void writeSingleRecordToDatabase(DataOutput OutS) throws IOException
     {
         
-        StringBuffer stringB = new StringBuffer(NAME_LENGTH);
+        StringBuffer stringB = new StringBuffer();
         stringB.append(name);
-     
+        stringB.setLength(30);
         OutS.writeChars(stringB.toString());
         
         OutS.writeDouble(price);
@@ -121,11 +125,27 @@ public class Product
     
     }
     
-    public void readRecord(RandomAccessFile InS) throws IOException
+    public void readRecord(RandomAccessFile InS ,int n) throws IOException, NoRecord
+    {
+        if (n<=InS.length()/RECORD_LENGTH)
+        {
+        
+        InS.seek((n-1)*RECORD_LENGTH);
+        this.readRecord(InS);
+        
+        }
+        else
+           throw new NoRecord("There is no record");
+    }
+    
+    public void readRecord(DataInput InS) throws IOException
     {
        
        StringBuffer stringB = new StringBuffer(NAME_LENGTH);
        
+       
+        
+     
        for(int i=0; i<NAME_LENGTH;i++)
        {
            
@@ -153,7 +173,7 @@ public class Product
     
     static Product[] readFromFile (RandomAccessFile InS) throws IOException
     {
-        InS.seek(0);
+       ((RandomAccessFile)InS).seek(0);
         int length= (int)(InS.length()/RECORD_LENGTH);
         
         Product[] products = new Product[length];
