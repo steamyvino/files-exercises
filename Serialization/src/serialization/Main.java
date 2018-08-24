@@ -19,6 +19,8 @@ import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 
 public class Main {
@@ -39,14 +41,14 @@ public class Main {
         try 
         {   
             
-            ObjectOutputStream OutS = new ObjectOutputStream(new FileOutputStream("database.txt"));
+            ObjectOutputStream OutS = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("database.txt")));
             OutS.writeObject(products);
             OutS.close();
             
             
             
             
-            ObjectInputStream InS = new ObjectInputStream(new FileInputStream("database.txt"));
+            ObjectInputStream InS = new ObjectInputStream(new GZIPInputStream(new FileInputStream("database.txt")));
             Product[] otherGuns = (Product[])InS.readObject();
             for (int i=0;i<otherGuns.length;i++)
             {

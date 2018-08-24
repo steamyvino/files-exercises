@@ -46,7 +46,7 @@ public class Main {
                 {
                     zOutS.write(tempData, 0, counter);
                 }
-            
+                zOutS.closeEntry();
                 InS.close();
             }
            
