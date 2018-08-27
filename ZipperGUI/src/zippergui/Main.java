@@ -23,7 +23,7 @@ public class Main {
             gui.setRemoveFileAction(new Action ("Remove File" , "Remove file from archive", new ImageIcon("remove.png")));
             gui.setZipAction(new Action ("Zip" , "Create archive", new ImageIcon("zip.png")));
             
-            
+            gui.initComponents();
    
     }
     

@@ -5,7 +5,7 @@
  */
 package zippergui;
 
-import java.awt.event.ActionEvent;
+
 import javax.swing.*;
 
 
@@ -13,24 +13,25 @@ public class GUI extends JFrame{
     
     GUI()
     {
-    
-        initComponents();
+ 
     
     }
     
-    private JButton addFileBtn;
-    private JButton removeFileBtn;
-    private JButton zipBtn;
+    
+    private JButton addFileBtn=new JButton();
+    private JButton removeFileBtn=new JButton();
+    private JButton zipBtn=new JButton();;
     private JList fileList=new JList();
     private JMenuBar menu = new JMenuBar();
     private JMenu file = new JMenu("file");
-    private JMenuItem addFileMenuItem ;
-    private JMenuItem removeFileMenuItem;
-    private JMenuItem zipMenuItem;
+    private JMenuItem addFileMenuItem=new JMenuItem();
+    private JMenuItem removeFileMenuItem=new JMenuItem();
+    private JMenuItem zipMenuItem=new JMenuItem();
     
  
     void setAddFileAction(Action action)
     {
+       
         addFileBtn.setAction(action);  
         addFileMenuItem.setAction(action);
     }
@@ -46,12 +47,13 @@ public class GUI extends JFrame{
     }
     
     
+    
     void initComponents()
     {
   
         this.setBounds(300,300,330,260);
         this.setDefaultCloseOperation(3);
-       
+        this.setJMenuBar(menu);
         addFileBtn.setHorizontalAlignment(SwingConstants.LEFT);
         
         GroupLayout layout = new GroupLayout(this.getContentPane());
@@ -64,7 +66,7 @@ public class GUI extends JFrame{
                 .addContainerGap(0,Short.MAX_VALUE)
                 .addGroup
                 (
-                    layout.createParallelGroup().addComponent(addFileBtn,130,GroupLayout.DEFAULT_SIZE,130).addComponent(removeFileBtn).addComponent(zipBtn)
+                    layout.createParallelGroup().addComponent(addFileBtn,110,GroupLayout.DEFAULT_SIZE,110).addComponent(removeFileBtn).addComponent(zipBtn)
                 )
         );
         layout.setVerticalGroup
