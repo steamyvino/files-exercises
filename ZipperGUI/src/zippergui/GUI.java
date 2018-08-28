@@ -6,10 +6,13 @@
 package zippergui;
 
 
+import java.io.File;
 import javax.swing.*;
 
 
 public class GUI extends JFrame{
+    
+    private JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
     
     GUI()
     {
@@ -17,17 +20,16 @@ public class GUI extends JFrame{
     
     }
     
-    
     private JButton addFileBtn=new JButton();
     private JButton removeFileBtn=new JButton();
     private JButton zipBtn=new JButton();;
-    private JList fileList=new JList();
+    private JList<String> fileList=new JList<String>();
     private JMenuBar menu = new JMenuBar();
     private JMenu file = new JMenu("file");
     private JMenuItem addFileMenuItem=new JMenuItem();
     private JMenuItem removeFileMenuItem=new JMenuItem();
     private JMenuItem zipMenuItem=new JMenuItem();
-    
+    private JScrollPane scrollPane = new JScrollPane(fileList);
  
     void setAddFileAction(Action action)
     {
@@ -44,6 +46,29 @@ public class GUI extends JFrame{
     {
         zipBtn.setAction(action);  
         zipMenuItem.setAction(action);
+    }
+    int showFileChooserOpen()
+    {
+        return fileChooser.showOpenDialog(rootPane);
+    
+    }
+    int showFileChooserSave()
+    {
+        return fileChooser.showSaveDialog(rootPane);
+    
+    }
+    JFileChooser getFileChooser()
+    {
+    
+        return fileChooser;
+    
+    }
+    
+    JList getList()
+    {
+    
+        return fileList;
+        
     }
     
     
@@ -62,7 +87,7 @@ public class GUI extends JFrame{
         layout.setHorizontalGroup
         (
                 layout.createSequentialGroup()
-                .addComponent(fileList, 100,150, Short.MAX_VALUE)
+                .addComponent(scrollPane, 100,150, Short.MAX_VALUE)
                 .addContainerGap(0,Short.MAX_VALUE)
                 .addGroup
                 (
@@ -72,7 +97,7 @@ public class GUI extends JFrame{
         layout.setVerticalGroup
         (
                 layout.createParallelGroup()
-                .addComponent(fileList,100,150,Short.MAX_VALUE)
+                .addComponent(scrollPane,100,150,Short.MAX_VALUE)
                 .addGroup
                 (
                     layout.createSequentialGroup().addComponent(addFileBtn).addComponent(removeFileBtn).addGap(5,40,Short.MAX_VALUE).addComponent(zipBtn)
@@ -81,7 +106,7 @@ public class GUI extends JFrame{
         
         this.getContentPane().setLayout(layout);
         
-        fileList.setBorder(BorderFactory.createEtchedBorder());
+        scrollPane.setBorder(BorderFactory.createEtchedBorder());
     
         /**
          * menu
